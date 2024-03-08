@@ -4,9 +4,18 @@
     scroll-behavior: smooth;
   }
   
+  html {
+    height:100%;
+
+  }
+
   body {
-    cursor: url("./images/cursor.png"), auto;
-    font-family: 'Roboto';
+    height:100%;
+  }
+  #root{
+    min-height: calc(100%);
+    padding-bottom: 60px;
+    position: relative;
   }
   
   /* Chrome, Safari, Edge, Opera */

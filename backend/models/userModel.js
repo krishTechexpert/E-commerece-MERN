@@ -35,11 +35,24 @@ const userSchema  = new mongoose.Schema({
     avatar:{
         public_id:{
             type:String,
-            required:true
         },
         url:{
             type:String,
-            required:true
+        }
+    },
+    gender:{
+        type:String,
+        enum:['Male','Female'],
+        required:[true,'select your gender']
+    },
+    acceptConditions:{
+        type:Boolean,
+        required:true,
+        trim:true,
+        validate(value){
+            if(!value){
+                throw new Error('accept term and conditions')
+            }
         }
     },
     role:{
@@ -86,7 +99,7 @@ userSchema.methods.generateResetPasswordToken = function(){
     // hasing and adding resetPasswordToken to userSchema
     this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex")
 
-    this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+    this.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // expire in 15 mintue
 
     return resetToken;
 

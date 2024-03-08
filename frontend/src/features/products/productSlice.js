@@ -1,6 +1,6 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
-axios.defaults.baseURL='http://localhost:4000/api/v1';
+import {instance} from "../../config"
+
 
 const initialState = {
     productList:[],
@@ -19,7 +19,7 @@ export const getAllProducts = createAsyncThunk('/api/products',
 
       }
       
-        const response = await axios.get(url)
+        const response = await instance.get(url)
         const {products,countProduct,resultPerPage,filteredProductCount} = response.data
         return {products,countProduct,resultPerPage,filteredProductCount}
     }
@@ -27,7 +27,7 @@ export const getAllProducts = createAsyncThunk('/api/products',
 
 export const getProductDetails = createAsyncThunk('/api/productDetails',
     async (id) => {
-        const response = await axios.get(`/product/${id}`)
+        const response = await instance.get(`/product/${id}`)
         const {product} = response.data
         return {product}
     }
@@ -36,12 +36,13 @@ export const getProductDetails = createAsyncThunk('/api/productDetails',
 export const productSlice = createSlice({
     name:'products',
     initialState,
-    reduccers:{},
+    reducers:{},
     extraReducers:(builder) => {
         builder
         // get All products
         .addCase(getAllProducts.pending, (state) => {
             state.loading='pending'
+            state.error=null;
         })
         .addCase(getAllProducts.rejected,(state,action) => {
             state.loading=null;
@@ -49,6 +50,7 @@ export const productSlice = createSlice({
         })
         .addCase(getAllProducts.fulfilled,(state,action) => {
             state.loading=null;
+            state.error=null;
             state.productList=action.payload.products;
             state.totalProducts=action.payload.countProduct
             state.resultPerPage=action.payload.resultPerPage
@@ -56,14 +58,18 @@ export const productSlice = createSlice({
         })
         // get product Details
         .addCase(getProductDetails.pending,(state) => {
-            state.loading='pending'
+            state.loading='pending';
+            state.error=null;
+            state.singleProduct=null;
         })
         .addCase(getProductDetails.rejected,(state,action) => {
             state.loading=null;
             state.error = action.error.message;
+            state.singleProduct=null;
         })
         .addCase(getProductDetails.fulfilled,(state,action) => {
             state.loading=null;
+            state.error=null;
             state.singleProduct=action.payload.product;
         })  
     }

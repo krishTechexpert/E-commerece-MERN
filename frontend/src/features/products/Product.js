@@ -2,24 +2,40 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import ReactStars from 'react-stars';
 import MetaData from '../../components/layout/MetaData';
-
+import { ToastContainer} from 'react-toastify';
+import { ADDToCartButton } from '../cart/AddToCartHOC';
+import withAddToCartHOC from '../cart/AddToCartHOC';
 
 
 function Product({product}) {
 
-const options = {
-  edit:false,
-  color:"rgba(20,20,20,.1)",
-  activeColor:"yellow",
-  value:product.ratings,
-  size:window.innerWidth < 600 ? 20:25,
-  isHalf:true
-}
+  const options = {
+    edit:false,
+    color:"rgba(20,20,20,.1)",
+    activeColor:"yellow",
+    value:product.ratings,
+    size:window.innerWidth < 600 ? 20:25,
+    isHalf:true
+  }
+
   return (
     <>
-    <MetaData title = "Big Bazaar | Product" />
-
-      <Link to={`/product/${product._id}`}  className="rounded-md border relative aspect-[16/9] w-auto rounded-md md:aspect-auto ">
+    
+    <MetaData title = "Krish Store | Product" />
+         
+      <div  className=" border relative aspect-[16/9] w-auto rounded-md md:aspect-auto ">
+      <ToastContainer
+      position="top-right"
+      autoClose={1000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+   
+      />
         <img
           src={product.images[0].url} alt={product.name}
           className="aspect-[16/9] w-full rounded-md md:aspect-auto md:h-[300px] lg:h-[200px]"
@@ -44,17 +60,18 @@ const options = {
             <ReactStars {...options} />
             <span className=" text-sm text-gray-600">({product.numOfReviews})</span>
           </div>
-         
-          <button
-            type="button"
-            className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-          >
-            Add to Cart
-          </button>
+         <div className='flex flex-1 items-center justify-between mt-4'>
+          <AddToCartFeature  product={product} />
+          <Link to={`/product/${product._id}`} className='w-1/2 bg-orange-300 text-white-700 flex justify-center px-2 py-1 hover:bg-sky-200'>View Details</Link>
+         </div>
         </div>
-      </Link>
+      </div>
+      
       </>
+    
   )
 }
 
-export default Product
+export default Product;
+
+const AddToCartFeature= withAddToCartHOC(ADDToCartButton)

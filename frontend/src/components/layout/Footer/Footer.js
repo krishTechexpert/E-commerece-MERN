@@ -1,46 +1,50 @@
 import React from 'react'
 import { Menu, X ,Store} from 'lucide-react';
+import { Link, useNavigate } from "react-router-dom";
 
 export function Footer() {
-  return (
-    <section className="relative overflow-hidden  bg-white py-5 border-t border-gray-300">
+  const navigate = useNavigate()
+
+  const page = window.location.pathname;
+  const resetToken = window.location.pathname.substring(16);
+  const forgotAndResetPasswordScreen = page === '/password/forgot' || page ==`/password/reset/${resetToken}`
+
+return <>
+    { forgotAndResetPasswordScreen ? null :
+    <section className="absolute left-0 bottom-0 w-full z-10 overflow-hidden  bg-white py-2 border-t border-gray-300">
       <div className="container relative z-10 mx-auto px-4">
-        <div className="-m-8 flex flex-wrap items-center justify-between">
-          <div className="w-auto p-8">
-            <a href="#">
-              <div className="inline-flex items-center">
-              <span>
+        <div className="flex flex-wrap items-center justify-between">
+        <div className="inline-flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
+          <span>
             <Store />
           </span>
-          <span className="font-bold">Big Bazar</span>
-              </div>
-            </a>
-          </div>
-          <div className="w-auto p-8">
-            <ul className="-m-5 flex flex-wrap items-center">
-              <li className="p-5">
+          <span className="font-bold">Krish Store</span>
+        </div>
+          <div className="w-auto">
+            <ul className=" flex flex-wrap items-center">
+              <li className="p-2">
                 <a className="font-medium text-gray-600 hover:text-gray-700" href="#">
                   Privacy Policy
                 </a>
               </li>
-              <li className="p-5">
+              <li className="p-2">
                 <a className="font-medium text-gray-600 hover:text-gray-700" href="#">
                   Terms of Service
                 </a>
               </li>
-              <li className="p-5">
+              <li className="p-2">
                 <a className="font-medium text-gray-600 hover:text-gray-700" href="#">
                   Return Policy
                 </a>
               </li>
-              <li className="p-5">
+              <li className="p-2">
                 <a className="font-medium text-gray-600 hover:text-gray-700" href="#">
                   Contact Us
                 </a>
               </li>
             </ul>
           </div>
-          <div className="w-auto p-8">
+          <div className="w-auto p-0">
             <div className="-m-1.5 flex flex-wrap">
               <div className="w-auto p-1.5">
                 <a href="#">
@@ -100,8 +104,8 @@ export function Footer() {
           </div>
         </div>
       </div>
-    </section>
-  )
+    </section>}
+    </>
 }
 
 
